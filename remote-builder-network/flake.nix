@@ -12,6 +12,7 @@
 
   outputs = { self, nixpkgs, nixops, nixops-plugged, utils, ... }:
     let
+      networkName = "builder";
       eachDefaultEnvironment = f: utils.lib.eachDefaultSystem
         (
           system:
@@ -37,7 +38,12 @@
     in
     eachDefaultEnvironment
       ({ pkgs, system }: {
-        devShell = import ./shell.nix { inherit pkgs; };
-      });
+        devShell = import ./shell.nix { inherit pkgs networkName; };
+      })
+    // {
+      nixopsConfigurations.default = import ./nixops-configurations {} // {
+        inherit nixpkgs networkName;
+      };
+    };
 }
 

@@ -1,9 +1,10 @@
 { pkgs ? import <nixpkgs> { overlays = import ./overlays.nix; }
+, networkName ? "builder"
 }:
 
 let
   builder = pkgs.callPackage ./. {
-    networkName = "builder";
+    inherit networkName;
   };
 in
 pkgs.mkShell {
@@ -27,7 +28,7 @@ pkgs.mkShell {
         echo "-------------------------------------"
         printf "${nc}"
         echo
-        ${builder}/bin/builder-help
+        ${builder}/bin/${networkName}-help
 
         # Hook up direnv
         echo
