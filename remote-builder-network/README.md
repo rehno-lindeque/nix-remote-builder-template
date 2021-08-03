@@ -1,4 +1,4 @@
-# Nix remote builders
+# Nix remote builder
 
 ## Preparing an environment with secrets
 
