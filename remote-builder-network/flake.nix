@@ -1,5 +1,5 @@
 {
-  description = "Remote builder network on AWS EC2";
+  description = "Remote builder and supporting infrastructure on AWS EC2";
 
   inputs = {
     nixops.url = "github:nixos/nixops";
