@@ -1,6 +1,6 @@
 # Nix remote builder templates
 
-This template is currently for my own use, but you are welcome to try it.
+This template is currently for my own use, but you are welcome to try it. The code may evolve as it becomes more obvious how flakes templates ought to be structured.
 
 A deployment will obviously incur charges, so make sure you understand what you are doing when deploying this. It is your own responsibility to make sure that the generated template is correct.
 
