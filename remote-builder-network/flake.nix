@@ -12,8 +12,6 @@
 
   outputs = { self, nixpkgs, nixops, nixops-plugged, utils, ... }:
     let
-      networkName = "builder";
-
       eachDefaultEnvironment = f: utils.lib.eachDefaultSystem
         (
           system:
@@ -28,11 +26,13 @@
         );
 
       inherit (nixpkgs) lib;
+
+      networkName = "builder";
     in
     eachDefaultEnvironment
       ({ pkgs, system }: {
 
-        devShell = import ./shell.nix { inherit pkgs networkName; };
+        devShell = import ./shell.nix { inherit pkgs; inherit networkName; };
 
         packages = nixops-plugged.outputs.packages."${system}";
 
@@ -46,34 +46,25 @@
           nixopsNetwork = ./nixops-modules/nixops-network;
 
           builderNetwork = ./nixops-modules/builder-network;
-
-          network = {...}: {
-            imports = with self.nixopsModules."${system}"; [
-              nixopsNetwork
-              builderNetwork
-            ];
-            builderNetwork = {
-              name = networkName;
-              aws.region = "us-east-1";
-              aws.zone = "us-east-1b";
-              nixosConfiguration = self.nixosConfigurations.builder;
-              binaryCache.url = "s3://builder?region=us-east-1";
-              binaryCache.publicKey = "builder:/0000000000000000000000000000000000000000000";
-            };
-            inherit nixpkgs;
-          };
         };
       })
     // {
+
       nixosConfigurations.builder = ./nixos-configurations/builder;
 
       nixopsConfigurations.default =
         let
           networkConfig = (lib.evalModules {
-            modules = with self.nixopsModules."x86_64-linux"; [
-              nixopsNetwork
-              network
-            ];
+            modules = with self.nixopsModules."x86_64-linux"; [{
+              imports = [
+                nixopsNetwork
+                builderNetwork
+                ./nixops-configurations
+              ];
+              _module.args.flake = self;
+              inherit nixpkgs;
+              builderNetwork.name = networkName;
+            }];
           }).config;
         in
           { inherit (networkConfig) nixpkgs network resources; } // networkConfig.deployments;
