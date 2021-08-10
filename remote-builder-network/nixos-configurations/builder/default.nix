@@ -7,9 +7,7 @@
 }:
 
 let
-  binaryCacheUrl = s3://nix-build?region=us-east-1;
   binaryCachePrivateKey = config.deployment.keys.binary-cache-key.path;
-  binaryCachePublicKey = config.builderNetwork.binaryCachePublicKey;
 
   # See https://nixos.org/manual/nix/unstable/advanced-topics/post-build-hook.html
   uploadToS3Cache = pkgs.writeShellScript "upload-to-s3-cache.sh" ''
@@ -27,10 +25,10 @@ let
 
     echo "Uploading" $OUT_PATHS
     echo exec ${pkgs.ts}/bin/ts nix copy \
-      --to 's3://nix-build?region=us-east-1&parallel-compression' \
+      --to '${config.builderNetwork.binaryCache.url}&parallel-compression' \
       $OUT_PATHS
     exec ${pkgs.ts}/bin/ts nix copy \
-      --to 's3://nix-build?region=us-east-1&parallel-compression' \
+      --to '${config.builderNetwork.binaryCache.url}&parallel-compression' \
       $OUT_PATHS
   '';
 in
@@ -81,10 +79,11 @@ in
 
   nix.binaryCaches = [
     http://cache.nixos.org/
+    config.builderNetwork.binaryCache.url
   ];
   nix.binaryCachePublicKeys = [
     "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    binaryCachePublicKey
+    config.builderNetwork.binaryCache.publicKey
   ];
 }
 

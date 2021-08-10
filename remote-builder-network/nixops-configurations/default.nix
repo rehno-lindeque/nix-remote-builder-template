@@ -36,12 +36,13 @@ let
       type = lib.types.str;
       default = "us-east-1b";
     };
-    # binaryCache = lib.mkOption {}
-    # binaryCacheUrl = lib.mkOption {
-    #   type = lib.types
-    # s3://nix-build?region=us-east-1;
-    binaryCachePublicKey = lib.mkOption {
-      type = lib.types.str;
+    binaryCache = {
+      url = lib.mkOption {
+        type = lib.types.str;
+      };
+      publicKey = lib.mkOption {
+        type = lib.types.str;
+      };
     };
     nixosConfiguration = lib.mkOption {
       type = lib.types.anything;

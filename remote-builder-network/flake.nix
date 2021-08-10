@@ -61,8 +61,9 @@
                 name = networkName;
                 region = "us-east-1";
                 zone = "us-east-1b";
-                binaryCachePublicKey = "builder:/0000000000000000000000000000000000000000000";
                 nixosConfiguration = self.nixosConfigurations.builder;
+                binaryCache.url = "s3://builder?region=us-east-1";
+                binaryCache.publicKey = "builder:/0000000000000000000000000000000000000000000";
               };
             };
           };
