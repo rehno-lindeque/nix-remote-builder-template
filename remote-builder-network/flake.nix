@@ -42,31 +42,27 @@
             nixops = final.nixops-plugged;
           };
 
-          nixosModules = {
-            nixopsNetwork = {
-              options = with lib.types; {
-                network = lib.mkOption { type = attrsOf anything; };
-                resources = lib.mkOption { type = attrsOf anything; };
-                deployments = lib.mkOption { type = attrsOf anything; };
-                nixpkgs = lib.mkOption { type = anything; };
-              };
-              config = {
-                nixpkgs = lib.mkDefault nixpkgs;
-              };
-            };
+        nixopsModules = {
+          nixopsNetwork = ./nixops-modules/nixops-network;
 
-            network = {...}: {
-              imports = [ ./nixops-configurations ];
-              builderNetwork = {
-                name = networkName;
-                aws.region = "us-east-1";
-                aws.zone = "us-east-1b";
-                nixosConfiguration = self.nixosConfigurations.builder;
-                binaryCache.url = "s3://builder?region=us-east-1";
-                binaryCache.publicKey = "builder:/0000000000000000000000000000000000000000000";
-              };
+          builderNetwork = ./nixops-modules/builder-network;
+
+          network = {...}: {
+            imports = with self.nixopsModules."${system}"; [
+              nixopsNetwork
+              builderNetwork
+            ];
+            builderNetwork = {
+              name = networkName;
+              aws.region = "us-east-1";
+              aws.zone = "us-east-1b";
+              nixosConfiguration = self.nixosConfigurations.builder;
+              binaryCache.url = "s3://builder?region=us-east-1";
+              binaryCache.publicKey = "builder:/0000000000000000000000000000000000000000000";
             };
+            inherit nixpkgs;
           };
+        };
       })
     // {
       nixosConfigurations.builder = ./nixos-configurations/builder;
@@ -74,7 +70,7 @@
       nixopsConfigurations.default =
         let
           networkConfig = (lib.evalModules {
-            modules = with self.nixosModules."x86_64-linux"; [
+            modules = with self.nixopsModules."x86_64-linux"; [
               nixopsNetwork
               network
             ];
