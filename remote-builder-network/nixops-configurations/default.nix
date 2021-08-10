@@ -1,8 +1,3 @@
-# { networkName ? "builder"
-# , networkDescription ? "${networkName} network"
-# , region ? "us-east-1"
-# , zone ? "us-east-1b"
-# , nixos-configuration ? ../nixos-configurations/builder
 { config
 , lib
 , ...

@@ -1,7 +1,3 @@
-# { networkName
-# , region
-# , zone
-# }:
 { config
 , ...
 }:

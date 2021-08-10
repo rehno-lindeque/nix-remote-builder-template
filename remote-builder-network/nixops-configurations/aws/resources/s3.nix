@@ -1,8 +1,3 @@
-# { networkName
-# , region ? "us-east-1"
-# , zone
-# , ...
-# }:
 { config
 , ...
 }:
