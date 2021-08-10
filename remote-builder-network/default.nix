@@ -23,6 +23,7 @@ let
                 echo
                 echo 'ADDITIONAL COMMANDS:'
                 echo
+                printf '${"\t"}${networkName}-ops ${white}create --flake .${nc}''\t''\tto get started''\n'
                 printf '${"\t"}${networkName}-ops ${white}build${nc} INSTALLABLES...''\tbuild nix derivations on remote builder''\n'
                 printf '${"\t"}${networkName}-ops ${white}up${nc}''\t''\t''\t''\tdeploy remote builder''\n'
                 printf '${"\t"}${networkName}-ops ${white}down${nc}''\t''\t''\ttear down remote builder''\n'
