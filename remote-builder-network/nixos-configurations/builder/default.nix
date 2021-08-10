@@ -3,13 +3,14 @@
 , resources
 , config
 , nodes
-, binaryCacheUrl ? s3://nix-build?region=us-east-1
-, binaryCachePrivateKey ? config.deployment.keys.binary-cache-key.path
-, binaryCachePublicKey
 , ...
 }:
 
 let
+  binaryCacheUrl = s3://nix-build?region=us-east-1;
+  binaryCachePrivateKey = config.deployment.keys.binary-cache-key.path;
+  binaryCachePublicKey = config.builderNetwork.binaryCachePublicKey;
+
   # See https://nixos.org/manual/nix/unstable/advanced-topics/post-build-hook.html
   uploadToS3Cache = pkgs.writeShellScript "upload-to-s3-cache.sh" ''
     set -eu

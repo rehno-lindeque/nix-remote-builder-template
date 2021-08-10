@@ -1,12 +1,18 @@
-{ networkName
-, region ? "us-east-1"
-, zone
+# { networkName
+# , region ? "us-east-1"
+# , zone
+# , ...
+# }:
+{ config
 , ...
 }:
 
+let
+  builderNetwork = config.builderNetwork;
+in
 {
-  s3Buckets.nix-build = {
-    inherit region;
+  resources.s3Buckets.nix-build = {
+    inherit (builderNetwork) region;
     name = "nix-build";
 
     # Don't delete this bucket ever

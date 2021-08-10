@@ -1,49 +1,90 @@
-{ networkName ? "builder"
-, networkDescription ? "${networkName} network"
-, region ? "us-east-1"
-, zone ? "us-east-1b"
+# { networkName ? "builder"
+# , networkDescription ? "${networkName} network"
+# , region ? "us-east-1"
+# , zone ? "us-east-1b"
+# , nixos-configuration ? ../nixos-configurations/builder
+{ config
+, lib
 , ...
 }:
 
 let
-  common = {
-    inherit networkName region zone;
+  # nixos-configuration = ../../nixos-configurations/builder;
+  builderNetwork = config.builderNetwork;
+
+  instances = import ./aws/instances.nix {
+    networkName = builderNetwork.name;
+    inherit (builderNetwork) region zone;
   };
 
-  instances = import ./ec2/instances.nix common;
   keys = {
-    # binary-cache-key = {
-    #   keyCommand = [ "vault" "kv" "get" "-field" "key" "secret/builder/nix-binary-cache" ];
-    # };
+    binary-cache-key = {
+      keyCommand = [ "vault" "kv" "get" "-field" "key" "secret/builder/nix-binary-cache" ];
+    };
+  };
+
+  builderOptions =  {
+    name = lib.mkOption {
+      type = lib.types.str;
+      default = "builder";
+    };
+    region = lib.mkOption {
+      type = lib.types.str;
+      default = "us-east-1";
+    };
+    zone = lib.mkOption {
+      type = lib.types.str;
+      default = "us-east-1b";
+    };
+    # binaryCache = lib.mkOption {}
+    # binaryCacheUrl = lib.mkOption {
+    #   type = lib.types
+    # s3://nix-build?region=us-east-1;
+    binaryCachePublicKey = lib.mkOption {
+      type = lib.types.str;
+    };
+    nixosConfiguration = lib.mkOption {
+      type = lib.types.anything;
+    };
   };
 in
 {
-  network.description = networkDescription;
-  network.enableRollback = true;
+  imports = [
+    ./aws/resources
+  ];
 
-  # Currently only legacy state storage is supported
-  network.storage.legacy = { };
+  options.builderNetwork = builderOptions;
 
-  # network.storage.s3 = {
-  #   profile = "";
-  #   region = "us-east-1";
-  #   key = "";
-  #   kms_keyid = "";
-  # };
+  config = {
+    network.description = lib.mkDefault "${builderNetwork.name} network";
+    # network.description = lib.mkDefault "${lib.traceValSeqN 1 config.deployment.name} network";
+    network.enableRollback = lib.mkDefault true;
 
-  resources =
-    import ./ec2/resources.nix common
-    // import ./iam/resources.nix common
-    // import ./s3/resources.nix common
-    // import ./vpc/resources.nix common;
+    # Currently only legacy state storage is supported
+    network.storage.legacy = { };
 
-  defaults = instances.defaults;
+    # network.storage.s3 = {
+    #   profile = "";
+    #   region = "us-east-1";
+    #   key = "";
+    #   kms_keyid = "";
+    # };
 
-  builder-1 = { resources, lib, ... }@args: {
-    deployment = instances.builder args // { inherit keys; };
-    imports = [
-      ../nixos-configurations/builder
-    ];
+    deployments.builder-1 = { resources, lib, ... }@args: {
+      imports = [
+        # ../nixos-configurations/builder
+        builderNetwork.nixosConfiguration
+      ];
+      options.builderNetwork = {
+        inherit (builderOptions) name binaryCachePublicKey;
+      };
+      config = {
+        deployment = instances.builder args // { inherit keys; };
+        builderNetwork = {
+          inherit (config.builderNetwork) name binaryCachePublicKey;
+        };
+      };
+    };
   };
 }
 

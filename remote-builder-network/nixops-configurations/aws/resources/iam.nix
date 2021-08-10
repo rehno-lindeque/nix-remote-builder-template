@@ -1,11 +1,17 @@
-{ networkName
-, region
-, zone
+# { networkName
+# , region
+# , zone
+# }:
+{ config
+, ...
 }:
 
+let
+  builderNetwork = config.builderNetwork;
+in
 {
-  iamRoles."${networkName}-role" = {
-    inherit region;
+  resources.iamRoles."${builderNetwork.name}-role" = {
+    inherit (builderNetwork) region;
     policy = builtins.toJSON {
       Statement = [
         # Read from nix binary cache
