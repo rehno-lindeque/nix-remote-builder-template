@@ -9,7 +9,7 @@ let
 
   instances = import ./aws/instances.nix {
     networkName = builderNetwork.name;
-    inherit (builderNetwork) region zone;
+    inherit (builderNetwork.aws) region zone;
   };
 
   keys = {
@@ -23,13 +23,15 @@ let
       type = lib.types.str;
       default = "builder";
     };
-    region = lib.mkOption {
-      type = lib.types.str;
-      default = "us-east-1";
-    };
-    zone = lib.mkOption {
-      type = lib.types.str;
-      default = "us-east-1b";
+    aws = {
+      region = lib.mkOption {
+        type = lib.types.str;
+        default = "us-east-1";
+      };
+      zone = lib.mkOption {
+        type = lib.types.str;
+        default = "us-east-1b";
+      };
     };
     binaryCache = {
       url = lib.mkOption {

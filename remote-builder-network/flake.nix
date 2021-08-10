@@ -59,8 +59,8 @@
               imports = [ ./nixops-configurations ];
               builderNetwork = {
                 name = networkName;
-                region = "us-east-1";
-                zone = "us-east-1b";
+                aws.region = "us-east-1";
+                aws.zone = "us-east-1b";
                 nixosConfiguration = self.nixosConfigurations.builder;
                 binaryCache.url = "s3://builder?region=us-east-1";
                 binaryCache.publicKey = "builder:/0000000000000000000000000000000000000000000";

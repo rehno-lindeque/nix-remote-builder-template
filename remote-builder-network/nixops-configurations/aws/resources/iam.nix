@@ -7,7 +7,7 @@ let
 in
 {
   resources.iamRoles."${builderNetwork.name}-role" = {
-    inherit (builderNetwork) region;
+    inherit (builderNetwork.aws) region;
     policy = builtins.toJSON {
       Statement = [
         # Read from nix binary cache

@@ -7,7 +7,7 @@ let
 in
 {
   resources.s3Buckets.nix-build = {
-    inherit (builderNetwork) region;
+    inherit (builderNetwork.aws) region;
     name = "nix-build";
 
     # Don't delete this bucket ever
