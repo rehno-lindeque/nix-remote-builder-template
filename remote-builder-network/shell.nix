@@ -1,18 +1,14 @@
 { pkgs ? import <nixpkgs> { overlays = import ./overlays.nix; }
 , networkName ? "builder"
+, networkOps ? pkgs.callPackage ./. { inherit networkName; }
 }:
 
-let
-  builder = pkgs.callPackage ./. {
-    inherit networkName;
-  };
-in
 pkgs.mkShell {
   buildInputs = with pkgs; [
     nix
     nixops
     nixpkgs-fmt
-    builder
+    networkOps
     direnv
   ];
   shellHook =
@@ -23,12 +19,12 @@ pkgs.mkShell {
       ''
         echo
         printf "${white}"
-        echo "-------------------------------------"
-        echo "Remote builder deployment environment"
-        echo "-------------------------------------"
+        echo "---------------------------------------------"
+        echo "Remote builder network deployment environment"
+        echo "---------------------------------------------"
         printf "${nc}"
         echo
-        ${builder}/bin/${networkName}-help
+        ${networkOps}/bin/${networkName}-help
 
         # Hook up direnv
         echo

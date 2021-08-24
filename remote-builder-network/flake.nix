@@ -51,9 +51,9 @@
     eachDefaultEnvironment
       ({ pkgs, system }: {
 
-        devShell = import ./shell.nix { inherit pkgs; inherit networkName; };
+        devShell = import ./shell.nix { inherit pkgs networkName; inherit (self.packages."${system}") networkOps; };
 
-        packages = nixops-plugged.outputs.packages."${system}";
+        packages = nixops-plugged.outputs.packages."${system}" // { networkOps = pkgs.callPackage ./. { inherit networkName; }; };
 
         overlay = final: prev:
           self.packages."${system}" // {
