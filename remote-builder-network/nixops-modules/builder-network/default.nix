@@ -1,11 +1,56 @@
-{ config
+{ flake
+, config
 , lib
 , ...
 }:
 
 let
-  # nixos-configuration = ../../nixos-configurations/builder;
   builderNetwork = config.builderNetwork;
+
+  builderNetworkOptions =  {
+    name = lib.mkOption {
+      type = lib.types.str;
+      default = "builder";
+    };
+
+    aws = {
+      region = lib.mkOption {
+        type = lib.types.str;
+        default = "us-east-1";
+      };
+
+      zone = lib.mkOption {
+        type = lib.types.str;
+        default = "us-east-1b";
+      };
+    };
+
+    binaryCache = {
+      url = lib.mkOption {
+        type = lib.types.str;
+      };
+
+      publicKey = lib.mkOption {
+        type = lib.types.str;
+      };
+    };
+
+    # nixosConfigurationModule = lib.mkOption {
+    #   type = lib.types.anything; # submoduleWith { specialArgs.flake = flake }
+    #   # default = flake.nixosModules.builder;
+    # };
+    # type = with types; attrsOf (submodule [ { options = socketOptions; } unitConfig ]);
+    #   description = "Definition of systemd socket units.";
+    # };
+    # nixosConfiguration = lib.mkOption {
+    #   type = lib.types.submodule flake.nixosModules.builder;
+    # };
+
+    builderConfigurations = lib.mkOption {
+      type = lib.types.attrsOf lib.types.anything; # One or more nixos configurations
+      description = "NixOS deployment configuration of each builder node.";
+    };
+  };
 
   instances = import ./aws/instances.nix {
     networkName = builderNetwork.name;
@@ -18,40 +63,27 @@ let
     };
   };
 
-  builderOptions =  {
-    name = lib.mkOption {
-      type = lib.types.str;
-      default = "builder";
-    };
-    aws = {
-      region = lib.mkOption {
-        type = lib.types.str;
-        default = "us-east-1";
+  mkDeployment = configuration: { resources, lib, ... }@args: {
+      imports = [
+        configuration
+      ];
+      options.builderNetwork = {
+        inherit (builderNetworkOptions) name binaryCache;
       };
-      zone = lib.mkOption {
-        type = lib.types.str;
-        default = "us-east-1b";
-      };
-    };
-    binaryCache = {
-      url = lib.mkOption {
-        type = lib.types.str;
-      };
-      publicKey = lib.mkOption {
-        type = lib.types.str;
+      config = {
+        deployment = instances.builder args // { inherit keys; };
+        builderNetwork = {
+          inherit (config.builderNetwork) name binaryCache;
+        };
       };
     };
-    nixosConfiguration = lib.mkOption {
-      type = lib.types.anything;
-    };
-  };
 in
 {
   imports = [
     ./aws/resources
   ];
 
-  options.builderNetwork = builderOptions;
+  options.builderNetwork = builderNetworkOptions;
 
   config = {
     network.description = lib.mkDefault "${builderNetwork.name} network";
@@ -67,20 +99,8 @@ in
     #   kms_keyid = "";
     # };
 
-    deployments.builder-1 = { resources, lib, ... }@args: {
-      imports = [
-        builderNetwork.nixosConfiguration
-      ];
-      options.builderNetwork = {
-        inherit (builderOptions) name binaryCache;
-      };
-      config = {
-        deployment = instances.builder args // { inherit keys; };
-        builderNetwork = {
-          inherit (config.builderNetwork) name binaryCache;
-        };
-      };
-    };
+    deployments = lib.mapAttrs (_: mkDeployment) builderNetwork.builderConfigurations;
+
   };
 }
 

@@ -12,6 +12,8 @@
 
   outputs = { self, nixpkgs, nixops, nixops-plugged, utils, ... }:
     let
+      inherit (nixpkgs) lib;
+
       eachDefaultEnvironment = f: utils.lib.eachDefaultSystem
         (
           system:
@@ -25,7 +27,24 @@
           }
         );
 
-      inherit (nixpkgs) lib;
+      nixopsNetwork = { nixpkgs, modules, specialArgs }:
+        let
+          baseModule = {
+            options = with lib.types; {
+              network = lib.mkOption { type = attrsOf anything; };
+              resources = lib.mkOption { type = attrsOf anything; };
+              deployments = lib.mkOption { type = attrsOf anything; };
+              nixpkgs = lib.mkOption { type = anything; };
+            };
+          };
+
+          networkConfig =
+            (lib.evalModules {
+              modules = [ baseModule ] ++ modules;
+              inherit specialArgs;
+            }).config;
+        in
+          { inherit (networkConfig) network resources nixpkgs; } // networkConfig.deployments;
 
       networkName = "builder";
     in
@@ -42,32 +61,35 @@
             nixops = final.nixops-plugged;
           };
 
-        nixopsModules = {
-          nixopsNetwork = ./nixops-modules/nixops-network;
-
-          builderNetwork = ./nixops-modules/builder-network;
+        nixosModules = {
+          builderNode = ./nixos-modules/builder-node;
         };
       })
     // {
+      nixopsModules = {
+        builderNetwork = ./nixops-modules/builder-network;
+      };
 
-      nixosConfigurations.builder = ./nixos-configurations/builder;
+      nixosConfigurations.builder = lib.nixosSystem {
+        modules = [ ./nixos-configurations/builder ];
+        specialArgs.flake = self;
+      };
+      nixopsConfigurations.default = nixopsNetwork {
+        modules =
+          let baseModule = { lib, ... }: {
+            options = with lib.types; {
+              network = lib.mkOption { type = attrsOf anything; };
+              resources = lib.mkOption { type = attrsOf anything; };
+              deployments = lib.mkOption { type = attrsOf anything; };
+              nixpkgs = lib.mkOption { type = anything; };
+            };
+          };
+          in
+          [ { imports = [ ./nixops-configurations ]; } ];
+        specialArgs.flake = self;
+        inherit nixpkgs;
+      };
 
-      nixopsConfigurations.default =
-        let
-          networkConfig = (lib.evalModules {
-            modules = with self.nixopsModules."x86_64-linux"; [{
-              imports = [
-                nixopsNetwork
-                builderNetwork
-                ./nixops-configurations
-              ];
-              _module.args.flake = self;
-              inherit nixpkgs;
-              builderNetwork.name = networkName;
-            }];
-          }).config;
-        in
-          { inherit (networkConfig) nixpkgs network resources; } // networkConfig.deployments;
     };
 }
 
