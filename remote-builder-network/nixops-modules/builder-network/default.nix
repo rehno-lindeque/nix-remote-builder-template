@@ -35,17 +35,6 @@ let
       };
     };
 
-    # nixosConfigurationModule = lib.mkOption {
-    #   type = lib.types.anything; # submoduleWith { specialArgs.flake = flake }
-    #   # default = flake.nixosModules.builder;
-    # };
-    # type = with types; attrsOf (submodule [ { options = socketOptions; } unitConfig ]);
-    #   description = "Definition of systemd socket units.";
-    # };
-    # nixosConfiguration = lib.mkOption {
-    #   type = lib.types.submodule flake.nixosModules.builder;
-    # };
-
     builderConfigurations = lib.mkOption {
       type = lib.types.attrsOf lib.types.anything; # One or more nixos configurations
       description = "NixOS deployment configuration of each builder node.";
