@@ -18,5 +18,11 @@
     };
   };
 
+  deployments.defaults = {
+    nix.sshServe.keys = [
+      # Add your own public key here
+    ];
+  };
+
   nixpkgs = flake.inputs.nixpkgs;
 }

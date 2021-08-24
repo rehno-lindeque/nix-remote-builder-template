@@ -76,9 +76,6 @@ in
 
     nix.sshServe = {
       enable = true;
-      keys = [
-        # Add your own public key here
-      ];
       protocol = "ssh-ng";
     };
 
