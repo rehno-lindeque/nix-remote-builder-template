@@ -70,10 +70,6 @@
         builderNetwork = ./nixops-modules/builder-network;
       };
 
-      nixosConfigurations.builder = lib.nixosSystem {
-        modules = [ ./nixos-configurations/builder ];
-        specialArgs.flake = self;
-      };
       nixopsConfigurations.default = nixopsNetwork {
         modules =
           let baseModule = { lib, ... }: {
