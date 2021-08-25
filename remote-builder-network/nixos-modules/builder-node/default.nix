@@ -69,11 +69,6 @@ in
       fsType = "ext4";
     };
 
-    environment.systemPackages =
-      with pkgs;
-      [
-      ];
-
     nix.sshServe = {
       enable = true;
       protocol = "ssh-ng";

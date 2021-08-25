@@ -1,4 +1,5 @@
 { flake
+, pkgs
 , lib
 , ...
 }:
@@ -22,6 +23,12 @@
     nix.sshServe.keys = [
       # Add your own public key here
     ];
+
+    environment.systemPackages =
+      with pkgs;
+      [
+        # Add additional system packages
+      ];
   };
 
   nixpkgs = flake.inputs.nixpkgs;
