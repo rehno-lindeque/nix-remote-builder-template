@@ -33,7 +33,7 @@ pkgs.mkShell {
         elif [ -n "$ZSH_VERSION" ]; then
           eval "$(direnv hook zsh)"
         else
-          echo "Unknown shell"
+          echo "Unknown terminal shell"
         fi
 
         export NIXOPS_STATE=$(pwd)/secret/localstate.nixops
