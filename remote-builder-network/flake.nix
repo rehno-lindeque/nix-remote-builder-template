@@ -2,7 +2,7 @@
   description = "Remote builder and supporting infrastructure on AWS EC2";
 
   inputs = {
-    nixops.url = "github:nixos/nixops";
+    nixops.url = "github:nixos/nixops/2e67d89d126af9d2bf702da13efe73fbd471a5ec";
     nixops-plugged.url = "github:lukebfox/nixops-plugged";
     nixops-plugged.inputs.nixpkgs.follows = "nixops/nixpkgs";
     nixops-plugged.inputs.flake-utils.follows = "nixops/utils";

@@ -47,6 +47,7 @@
       "original": {
         "owner": "nixos",
         "repo": "nixops",
+        "rev": "2e67d89d126af9d2bf702da13efe73fbd471a5ec",
         "type": "github"
       }
     },
