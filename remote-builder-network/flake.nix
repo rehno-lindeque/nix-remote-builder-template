@@ -69,18 +69,8 @@
         builderNetwork = ./nixops-modules/builder-network;
       };
 
-      nixopsConfigurations.default = nixopsNetwork {
-        modules =
-          let baseModule = { lib, ... }: {
-            options = with lib.types; {
-              network = lib.mkOption { type = attrsOf anything; };
-              resources = lib.mkOption { type = attrsOf anything; };
-              deployments = lib.mkOption { type = attrsOf anything; };
-              nixpkgs = lib.mkOption { type = anything; };
-            };
-          };
-          in
-          [ { imports = [ ./nixops-configurations ]; } ];
+      nixopsConfigurations.default = self.lib.nixopsNetwork {
+        modules = [ ./nixops-configurations  ];
         specialArgs.flake = self;
         inherit nixpkgs;
       };
