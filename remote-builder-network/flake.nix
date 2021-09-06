@@ -23,7 +23,23 @@
           }
         );
 
-      nixopsNetwork = { nixpkgs, modules, specialArgs }:
+      networkName = "builder";
+    in
+    eachDefaultEnvironment
+      ({ pkgs, system }: {
+
+        devShell = import ./shell.nix { inherit pkgs networkName; inherit (self.packages."${system}") networkOps; };
+
+        packages = nixops-plugged.outputs.packages."${system}" // { networkOps = pkgs.callPackage ./. { inherit networkName; }; };
+
+        nixosModules = {
+          builderNode = ./nixos-modules/builder-node;
+        };
+      })
+
+    // {
+
+      lib.nixopsNetwork = { nixpkgs, modules, specialArgs }:
         let
           baseModule = {
             options = with lib.types; {
@@ -42,20 +58,6 @@
         in
           { inherit (networkConfig) network resources nixpkgs; } // networkConfig.deployments;
 
-      networkName = "builder";
-    in
-    eachDefaultEnvironment
-      ({ pkgs, system }: {
-
-        devShell = import ./shell.nix { inherit pkgs networkName; inherit (self.packages."${system}") networkOps; };
-
-        packages = nixops-plugged.outputs.packages."${system}" // { networkOps = pkgs.callPackage ./. { inherit networkName; }; };
-
-        nixosModules = {
-          builderNode = ./nixos-modules/builder-node;
-        };
-      })
-    // {
       overlay = final: prev: self.packages."${system}" //
         nix = final.nixFlakes;
         nixops = nixops-plugged.packages."${final.system}".nixops-plugged;
