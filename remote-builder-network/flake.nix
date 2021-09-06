@@ -19,11 +19,7 @@
           system:
           f {
             inherit system;
-            pkgs = import nixpkgs {
-              inherit system;
-              overlays = [ self.overlay ];
-              config.allowUnfree = true;
-            };
+            pkgs = nixpkgs.legacyPackages."${system}".extend self.overlay;
           }
         );
 
@@ -70,7 +66,7 @@
       };
 
       nixopsConfigurations.default = self.lib.nixopsNetwork {
-        modules = [ ./nixops-configurations  ];
+        modules = [ ./nixops-configurations ];
         specialArgs.flake = self;
         inherit nixpkgs;
       };
