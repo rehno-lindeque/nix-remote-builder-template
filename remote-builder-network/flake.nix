@@ -27,16 +27,17 @@
     in
     eachDefaultEnvironment
       ({ pkgs, system }: {
+        devShell = import ./shell.nix {
+         inherit networkName;
+         pkgs = pkgs // self.packages."${system}";
+       };
 
-        devShell = import ./shell.nix { inherit pkgs networkName; inherit (self.packages."${system}") networkOps; };
-
-        packages = nixops-plugged.outputs.packages."${system}" // { networkOps = pkgs.callPackage ./. { inherit networkName; }; };
+        packages = { inherit (pkgs) networkOps; };
 
         nixosModules = {
           builderNode = ./nixos-modules/builder-node;
         };
       })
-
     // {
 
       lib.nixopsNetwork = { nixpkgs, modules, specialArgs }:
@@ -58,9 +59,10 @@
         in
           { inherit (networkConfig) network resources nixpkgs; } // networkConfig.deployments;
 
-      overlay = final: prev: self.packages."${system}" //
+      overlay = final: prev: {
         nix = final.nixFlakes;
         nixops = nixops-plugged.packages."${final.system}".nixops-plugged;
+        networkOps = final.callPackage ./. { inherit networkName; };
       };
 
       nixopsModules = {
