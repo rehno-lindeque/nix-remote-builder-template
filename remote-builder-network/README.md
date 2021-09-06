@@ -21,7 +21,7 @@ export EC2_SECRET_KEY="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ## Prepare to deploy the network for the first time
 
 ```
-builder-ops create flake.nix
+builder-ops create --flake .
 ```
 
 Before deploying, carefully inspect all the files in this template in order to make sure you understand what it will do.

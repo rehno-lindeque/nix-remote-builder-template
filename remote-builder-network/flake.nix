@@ -14,6 +14,8 @@
     let
       inherit (nixpkgs) lib;
 
+      networkName = "builder";
+
       eachDefaultEnvironment = f: utils.lib.eachDefaultSystem
         (
           system:
@@ -23,22 +25,20 @@
           }
         );
 
-      networkName = "builder";
     in
-    eachDefaultEnvironment
-      ({ pkgs, system }: {
-        devShell = import ./shell.nix {
-         inherit networkName;
-         pkgs = pkgs // self.packages."${system}";
-       };
+    eachDefaultEnvironment ({ pkgs, system }: {
 
-        packages = { inherit (pkgs) networkOps; };
+      devShell = import ./shell.nix {
+        inherit networkName;
+        pkgs = pkgs // self.packages."${system}";
+      };
 
-        nixosModules = {
-          builderNode = ./nixos-modules/builder-node;
-        };
-      })
-    // {
+      packages = { inherit (pkgs) networkOps; };
+
+      nixosModules = {
+        builderNode = ./nixos-modules/builder-node;
+      };
+    }) // {
 
       lib.nixopsNetwork = { nixpkgs, modules, specialArgs }:
         let

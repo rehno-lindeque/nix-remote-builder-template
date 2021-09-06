@@ -18,6 +18,7 @@
   outputs = { self, nixpkgs, utils, remote-builder-network, ... }:
     let
       inherit (nixpkgs) lib;
+
       networkName = "builder";
 
       eachDefaultEnvironment = f: utils.lib.eachDefaultSystem

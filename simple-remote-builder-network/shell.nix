@@ -1,7 +1,5 @@
 { pkgs ? import <nixpkgs> {}
 , networkName ? "builder"
-# , networkOps ? pkgs.callPackage flake.inputs.remote-builder-network.packages."${pkgs.system}".networkOps { inherit networkName; }
-# , networkOps ? []
 }:
 
 pkgs.mkShell {
