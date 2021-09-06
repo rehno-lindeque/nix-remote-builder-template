@@ -21,7 +21,7 @@
             inherit system;
             pkgs = import nixpkgs {
               inherit system;
-              overlays = [ self.overlay."${system}" ];
+              overlays = [ self.overlay ];
               config.allowUnfree = true;
             };
           }
@@ -55,17 +55,16 @@
 
         packages = nixops-plugged.outputs.packages."${system}" // { networkOps = pkgs.callPackage ./. { inherit networkName; }; };
 
-        overlay = final: prev:
-          self.packages."${system}" // {
-            nix = final.nixFlakes;
-            nixops = final.nixops-plugged;
-          };
-
         nixosModules = {
           builderNode = ./nixos-modules/builder-node;
         };
       })
     // {
+      overlay = final: prev: self.packages."${system}" //
+        nix = final.nixFlakes;
+        nixops = nixops-plugged.packages."${final.system}".nixops-plugged;
+      };
+
       nixopsModules = {
         builderNetwork = ./nixops-modules/builder-network;
       };
