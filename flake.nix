@@ -35,6 +35,11 @@
           path = ./remote-builder-network;
           description = "A template for deploying a remote builder and supporting infrastructure on AWS EC2";
         };
+
+        simple-remote-builder-network = {
+          path = ./simple-remote-builder-network;
+          description = "A simplified remote builder template that uses remote-builder-network as an input";
+        };
       };
 
       defaultTemplate = self.templates.remote-builder-network;
