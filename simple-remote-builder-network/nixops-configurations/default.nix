@@ -10,8 +10,12 @@
   builderNetwork = {
     aws.region = "us-east-1";
     aws.zone = "us-east-1b";
-    binaryCache.url = "s3://builder?region=us-east-1";
+    binaryCache.url = "s3://nix-build?region=us-east-1";
     binaryCache.publicKey = "builder:/0000000000000000000000000000000000000000000";
+    binaryCache.managedS3Bucket = {
+      enable = false;
+      name = "nix-build";
+    };
     builderConfigurations = {
       builder-1 = flake.nixosModules."x86_64-linux".builderNode;
     };

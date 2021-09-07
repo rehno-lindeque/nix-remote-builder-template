@@ -23,6 +23,7 @@ let
         type = lib.types.str;
         default = "us-east-1b";
       };
+
     };
 
     binaryCache = {
@@ -32,6 +33,14 @@ let
 
       publicKey = lib.mkOption {
         type = lib.types.str;
+      };
+
+      managedS3Bucket = {
+        enable = lib.mkEnableOption "Create and manage an s3 bucket resource";
+        name = lib.mkOption {
+          type = lib.types.str;
+          default = "builder";
+        };
       };
     };
 
