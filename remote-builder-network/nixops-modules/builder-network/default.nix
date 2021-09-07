@@ -55,12 +55,6 @@ let
     inherit (builderNetwork.aws) region zone;
   };
 
-  keys = {
-    binary-cache-key = {
-      keyCommand = [ "vault" "kv" "get" "-field" "key" "secret/builder/nix-binary-cache" ];
-    };
-  };
-
   mkDeployment = configuration: { resources, lib, ... }@args: {
       imports = [
         configuration
@@ -69,7 +63,7 @@ let
         inherit (builderNetworkOptions) name binaryCache;
       };
       config = {
-        deployment = instances.builder args // { inherit keys; };
+        deployment = instances.builder args;
         builderNetwork = {
           inherit (config.builderNetwork) name binaryCache;
         };

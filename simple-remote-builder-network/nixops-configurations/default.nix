@@ -22,6 +22,19 @@
   };
 
   deployments.defaults = { pkgs, lib, ... }: {
+    deployment.keys = {
+      binary-cache-key = {
+        # Replace this placeholder. See option #1 and option #2
+        text = lib.trace "TODO: replace binary-cache-key with a path or keyCommand" "";
+
+        # Option #1: Add a key file to a secret sub-directory
+        # path = ./secret/binary-cache-key
+
+        # Option #2: Fetch the key via some external command like pass or vault
+        # keyCommand = [ ... ];
+      };
+    };
+
     nix.sshServe.keys = [
       # Add your own public key here
     ];
