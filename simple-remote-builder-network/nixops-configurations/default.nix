@@ -1,6 +1,4 @@
 { flake
-, pkgs
-, lib
 , ...
 }:
 
@@ -19,7 +17,7 @@
     };
   };
 
-  deployments.defaults = {
+  deployments.defaults = { pkgs, lib, ... }: {
     nix.sshServe.keys = [
       # Add your own public key here
     ];
