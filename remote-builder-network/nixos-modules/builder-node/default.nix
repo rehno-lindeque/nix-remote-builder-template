@@ -24,18 +24,18 @@ let
     export IFS=' '
 
     echo "Signing" $OUT_PATHS
-    echo nix store sign \
+    echo ${pkgs.nix}/bin/nix store sign \
       --key-file ${binaryCachePrivateKey} \
       $OUT_PATHS
-    nix store sign-paths \
+    ${pkgs.nix}/bin/nix store sign-paths \
       --key-file ${binaryCachePrivateKey} \
       $OUT_PATHS
 
     echo "Uploading" $OUT_PATHS
-    echo exec ${pkgs.ts}/bin/ts nix copy \
+    echo exec ${pkgs.ts}/bin/ts ${pkgs.nix}/bin/nix copy \
       --to '${builderNetwork.binaryCache.url}&parallel-compression' \
       $OUT_PATHS
-    exec ${pkgs.ts}/bin/ts nix copy \
+    exec ${pkgs.ts}/bin/ts ${pkgs.nix}/bin/nix copy \
       --to '${builderNetwork.binaryCache.url}&parallel-compression' \
       $OUT_PATHS
   '';
