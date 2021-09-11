@@ -24,6 +24,15 @@ let
         default = "us-east-1b";
       };
 
+      instanceType = lib.mkOption {
+        type = lib.types.str;
+        default = "t2.micro";
+      };
+
+      spotInstancePrice = lib.mkOption {
+        type = lib.types.int;
+        default = 1;
+      };
     };
 
     binaryCache = {
@@ -52,7 +61,7 @@ let
 
   instances = import ./aws/instances.nix {
     networkName = builderNetwork.name;
-    inherit (builderNetwork.aws) region zone;
+    inherit (builderNetwork.aws) region zone instanceType spotInstancePrice;
   };
 
   mkDeployment = configuration: { resources, lib, ... }@args: {

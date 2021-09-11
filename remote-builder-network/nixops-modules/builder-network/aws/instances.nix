@@ -1,10 +1,12 @@
 { networkName
 , region
 , zone
+, instanceType
+, spotInstancePrice
 }:
 
 let
-  ec2SpotInstance = { instanceType ? "t2.micro", spotInstancePrice ? 1, resources, lib, ... }: {
+  ec2SpotInstance = { resources, lib, ... }: {
     targetEnv = "ec2";
     ec2 = {
       inherit instanceType region spotInstancePrice zone;
