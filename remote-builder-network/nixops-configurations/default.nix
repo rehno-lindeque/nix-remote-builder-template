@@ -8,8 +8,17 @@
   ];
 
   builderNetwork = {
-    aws.region = "us-east-1";
-    aws.zone = "us-east-1b";
+    name = "builder";
+    aws = {
+      region = "us-east-1";
+      zone = "us-east-1b";
+
+      # For current spot instance pricing, see
+      # https://aws.amazon.com/ec2/spot/pricing
+      # https://aws.amazon.com/ec2/spot/instance-advisor/
+      instanceType = "t2.micro";
+      spotInstancePrice = 1;
+    };
     binaryCache.url = "s3://nix-build?region=us-east-1";
     binaryCache.publicKey = "builder:/0000000000000000000000000000000000000000000";
     binaryCache.managedS3Bucket = {
