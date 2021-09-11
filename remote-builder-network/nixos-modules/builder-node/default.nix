@@ -24,7 +24,7 @@ let
     export IFS=' '
 
     echo "Signing" $OUT_PATHS
-    echo ${pkgs.nixFlakes}/bin/nix store sign \
+    echo ${pkgs.nixFlakes}/bin/nix store sign-paths \
       --key-file ${binaryCachePrivateKey} \
       $OUT_PATHS
     ${pkgs.nixFlakes}/bin/nix store sign-paths \
