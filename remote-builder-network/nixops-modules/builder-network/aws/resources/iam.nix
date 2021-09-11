@@ -4,6 +4,7 @@
 
 let
   builderNetwork = config.builderNetwork;
+  s3Bucket = builderNetwork.binaryCache.s3Bucket;
 in
 {
   resources.iamRoles."${builderNetwork.name}-role" = {
@@ -18,8 +19,8 @@ in
             "s3:GetBucketLocation"
           ];
           Resource = [
-            "arn:aws:s3:::nix-build"
-            "arn:aws:s3:::nix-build/*"
+            "arn:aws:s3:::${s3Bucket.name}"
+            "arn:aws:s3:::${s3Bucket.name}/*"
           ];
         }
         # Upload to nix binary cache
@@ -35,8 +36,8 @@ in
             "s3:PutObject"
           ];
           Resource = [
-            "arn:aws:s3:::nix-build"
-            "arn:aws:s3:::nix-build/*"
+            "arn:aws:s3:::${s3Bucket.name}"
+            "arn:aws:s3:::${s3Bucket.name}/*"
           ];
         }
       ];

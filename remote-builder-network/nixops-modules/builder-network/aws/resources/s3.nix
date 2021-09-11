@@ -5,13 +5,13 @@
 
 let
   builderNetwork = config.builderNetwork;
-  managedS3Bucket = builderNetwork.binaryCache.managedS3Bucket;
+  s3Bucket = builderNetwork.binaryCache.s3Bucket;
 in
-lib.mkIf managedS3Bucket.enable
+lib.mkIf s3Bucket.provision
 {
-  resources.s3Buckets.${managedS3Bucket.name} = {
+  resources.s3Buckets.${s3Bucket.name} = {
     inherit (builderNetwork.aws) region;
-    name = managedS3Bucket.name;
+    name = s3Bucket.name;
 
     # Don't delete this bucket ever
     persistOnDestroy = true;

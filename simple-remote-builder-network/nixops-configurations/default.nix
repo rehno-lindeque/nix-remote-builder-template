@@ -21,9 +21,9 @@
     };
     binaryCache.url = "s3://nix-build?region=us-east-1";
     binaryCache.publicKey = "builder:/0000000000000000000000000000000000000000000";
-    binaryCache.managedS3Bucket = {
-      enable = false;
+    binaryCache.s3Bucket = {
       name = "nix-build";
+      provision = false;
     };
     builderConfigurations = {
       builder-1 = flake.nixosModules."x86_64-linux".builderNode;

@@ -44,11 +44,15 @@ let
         type = lib.types.str;
       };
 
-      managedS3Bucket = {
-        enable = lib.mkEnableOption "Create and manage an s3 bucket resource";
+      s3Bucket = {
         name = lib.mkOption {
           type = lib.types.str;
           default = "builder";
+        };
+        provision = lib.mkOption {
+          default = false;
+          type = lib.types.bool;
+          description = "Provision and manage the s3 bucket resource automatically.";
         };
       };
     };
