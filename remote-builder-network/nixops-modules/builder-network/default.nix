@@ -24,6 +24,12 @@ let
         default = "us-east-1b";
       };
 
+      ami = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        example = "ami-00000000";
+        default = null;
+      };
+
       instanceType = lib.mkOption {
         type = lib.types.str;
         default = "t2.micro";
@@ -65,7 +71,7 @@ let
 
   instances = import ./aws/instances.nix {
     networkName = builderNetwork.name;
-    inherit (builderNetwork.aws) region zone instanceType spotInstancePrice;
+    inherit (builderNetwork.aws) region zone ami instanceType spotInstancePrice;
   };
 
   mkDeployment = configuration: { resources, lib, ... }@args: {
