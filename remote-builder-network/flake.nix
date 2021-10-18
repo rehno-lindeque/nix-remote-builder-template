@@ -45,8 +45,8 @@
           baseModule = {
             options = with lib.types; {
               network = lib.mkOption { type = attrsOf anything; };
-              resources = lib.mkOption { type = attrsOf anything; };
-              deployments = lib.mkOption { type = attrsOf anything; };
+              resources = lib.mkOption { type = attrsOf unspecified; };
+              deployments = lib.mkOption { type = attrsOf unspecified; };
               nixpkgs = lib.mkOption { type = anything; };
             };
           };
