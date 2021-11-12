@@ -2,8 +2,8 @@
   description = "Remote builder and supporting infrastructure on AWS EC2";
 
   inputs = {
-    # remote-builder-network.url = "path:../remote-builder-network";
-    remote-builder-network.url = "github:rehno-lindeque/nix-remote-builder-template?dir=remote-builder-network";
+    remote-builder-network.url = "path:../remote-builder-network";
+    # remote-builder-network.url = "github:rehno-lindeque/nix-remote-builder-template?dir=remote-builder-network";
 
     # Avoid "follows a non-existent input" bug in nix 2.0
     # See https://github.com/NixOS/nix/issues/3602

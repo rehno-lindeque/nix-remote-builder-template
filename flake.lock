@@ -2,7 +2,7 @@
   "nodes": {
     "nixops": {
       "inputs": {
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "utils": "utils"
       },
       "locked": {
@@ -16,10 +16,44 @@
       "original": {
         "owner": "nixos",
         "repo": "nixops",
+        "rev": "2e67d89d126af9d2bf702da13efe73fbd471a5ec",
+        "type": "github"
+      }
+    },
+    "nixops-aws": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1633007334,
+        "narHash": "sha256-aNK6fIwd4CKXLBjuHRyAsKq5Yb4h1An4TeCL+0ugGlg=",
+        "owner": "rehno-lindeque",
+        "repo": "nixops-aws",
+        "rev": "ebf09fa164bc0fbaceeb98769618391be80b60ee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rehno-lindeque",
+        "ref": "spot-fleet",
+        "repo": "nixops-aws",
         "type": "github"
       }
     },
     "nixpkgs": {
+      "locked": {
+        "lastModified": 1632971374,
+        "narHash": "sha256-pszKnYBZYWrI/hbeiRoKwEFyeoqieIYAutxd7i8gYEE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "44999232a974132e4c4623ae67f856154b330dff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "44999232a974132e4c4623ae67f856154b330dff",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1612282043,
         "narHash": "sha256-MzoN8nI1eydYHuWBAXBcw9Na0XndZHa/VjoxZRWSX68=",
@@ -38,6 +72,7 @@
     "remote-builder-network": {
       "inputs": {
         "nixops": "nixops",
+        "nixops-aws": "nixops-aws",
         "nixops-plugged": [
           "remote-builder-network",
           "nixops-plugged"
@@ -54,7 +89,7 @@
         ]
       },
       "locked": {
-        "narHash": "sha256-XqJVv1Ip/CBElC4f/tirampDAd0edL8CbjVnkSrfcHw=",
+        "narHash": "sha256-AtHiYeJ1Jx2jZE5bqtjj0m9NEFtahPSNMJCLSxzI1qI=",
         "path": "./remote-builder-network",
         "type": "path"
       },
@@ -65,11 +100,7 @@
     },
     "root": {
       "inputs": {
-        "nixpkgs": [
-          "remote-builder-network",
-          "nixops",
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs",
         "remote-builder-network": "remote-builder-network",
         "utils": [
           "remote-builder-network",

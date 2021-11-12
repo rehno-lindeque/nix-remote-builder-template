@@ -69,12 +69,13 @@ let
     };
   };
 
-  instances = import ./aws/instances.nix {
-    networkName = builderNetwork.name;
-    inherit (builderNetwork.aws) region zone ami instanceType spotInstancePrice;
-  };
+  # instances = import ./aws/instances.nix {
+  #   networkName = builderNetwork.name;
+  #   inherit (builderNetwork.aws) region zone ami instanceType spotInstancePrice;
+  # };
 
-  mkDeployment = configuration: { resources, lib, ... }@args: {
+  mkDeployment = configuration: { resources, lib, ... }@args:
+    {
       imports = [
         configuration
       ];
@@ -82,7 +83,13 @@ let
         inherit (builderNetworkOptions) name binaryCache;
       };
       config = {
-        deployment = instances.builder args;
+        deployment = {
+          targetEnv = "ec2-target";
+          ec2.target = {
+            spotFleetRequestId = resources.awsSpotFleets."${builderNetwork.name}-fleet";
+          };
+        };
+
         builderNetwork = {
           inherit (config.builderNetwork) name binaryCache;
         };

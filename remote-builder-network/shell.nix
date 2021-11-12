@@ -1,5 +1,5 @@
 { pkgs ? import <nixpkgs> {}
-, networkName ? "builder"
+, networkName
 }:
 
 pkgs.mkShell {
@@ -16,7 +16,7 @@ pkgs.mkShell {
       white = "\\e[1;37m";
     in
       ''
-        echo
+        clear -x
         printf "${white}"
         echo "---------------------------------------------"
         echo "Remote builder network deployment environment"

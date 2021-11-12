@@ -14,7 +14,6 @@ let
         (import ./poetry-git-overlay.nix { inherit pkgs; })
         (
           self: super: {
-
             nixops = super.nixops.overridePythonAttrs (
               old: {
                 meta = old.meta // {
@@ -24,7 +23,6 @@ let
                   platforms = lib.platforms.unix;
                   license = lib.licenses.lgpl3;
                 };
-
               }
             );
           }
@@ -57,6 +55,7 @@ let
       # TODO: TEMPORARY
       editablePackageSources = {
         nixops-aws = "/home/me/projects/development/nixops-aws";
+        nixops = "/home/me/projects/development/nixops";
       };
     }
   ).python;

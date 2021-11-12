@@ -8,7 +8,8 @@
   ];
 
   builderNetwork = {
-    name = "builder";
+    name = "ml-builder";
+    # name = "builder";
     aws = {
       region = "us-east-1";
       zone = "us-east-1b";
@@ -18,6 +19,9 @@
       # https://aws.amazon.com/ec2/spot/instance-advisor/
       instanceType = "t2.micro";
       spotInstancePrice = 1;
+
+      # TODO: temporary
+      ami = "ami-027ea73608a78aea0";
     };
     binaryCache.url = "s3://nix-build?region=us-east-1";
     binaryCache.publicKey = "builder:/0000000000000000000000000000000000000000000";
@@ -26,7 +30,8 @@
       provision = false;
     };
     builderConfigurations = {
-      builder-1 = flake.nixosModules."x86_64-linux".builderNode;
+      # builder-1 = flake.nixosModules."x86_64-linux".builderNode;
+      builder-tmp = flake.nixosModules."x86_64-linux".builderNode;
     };
   };
 

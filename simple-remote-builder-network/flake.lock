@@ -272,19 +272,13 @@
         ]
       },
       "locked": {
-        "dir": "remote-builder-network",
-        "lastModified": 1630944053,
-        "narHash": "sha256-KGNEgYE9KoYOigClTF81Fa7RPXrjyTGtsJaUgMxCpTg=",
-        "owner": "rehno-lindeque",
-        "repo": "nix-remote-builder-template",
-        "rev": "47ae8bde37bb126c2eac62900de20cbf587d28fd",
-        "type": "github"
+        "narHash": "sha256-Ui1INC3MrLDjIM4QOrBUb7xsJ+55RZghcznYbRMcFSI=",
+        "path": "../remote-builder-network",
+        "type": "path"
       },
       "original": {
-        "dir": "remote-builder-network",
-        "owner": "rehno-lindeque",
-        "repo": "nix-remote-builder-template",
-        "type": "github"
+        "path": "../remote-builder-network",
+        "type": "path"
       }
     },
     "root": {

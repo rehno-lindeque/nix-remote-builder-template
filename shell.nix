@@ -13,14 +13,18 @@ pkgs.mkShell {
     nixpkgs-fmt
     direnv
     remote-builder-template
+
+    # dependencies for updating nixops
+    poetry
+    poetry2nix.cli
   ];
   shellHook =
     let
       nc = "\\e[0m"; # No Color
       white = "\\e[1;37m";
     in
-      ''
-        echo
+     ''
+        clear -x
         printf "${white}"
         echo "--------------------------------"
         echo "Template development environment"

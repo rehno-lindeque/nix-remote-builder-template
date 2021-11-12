@@ -2,7 +2,8 @@
   description = "Nix templates for deploying remote builder on AWS EC2";
   inputs = {
     remote-builder-network.url = "path:./remote-builder-network";
-    nixpkgs.follows = "remote-builder-network/nixops/nixpkgs";
+    # nixpkgs.follows = "remote-builder-network/nixops/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/44999232a974132e4c4623ae67f856154b330dff";
     utils.follows = "remote-builder-network/nixops/utils";
 
     # Avoid "follows a non-existent input" bug in nix 2.0
