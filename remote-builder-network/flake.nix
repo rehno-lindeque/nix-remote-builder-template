@@ -4,14 +4,15 @@
   inputs = {
     # nixops.url = "github:nixos/nixops/2e67d89d126af9d2bf702da13efe73fbd471a5ec";
     # nixops.url = "github:nixos/nixops";
-    # nixops.url = "github:rehno-lindeque/nixops?ref=wip";
-    nixops-src.url = "path:/home/me/projects/development/nixops";
+    nixops-src.url = "github:rehno-lindeque/nixops?ref=wip";
+    # nixops-src.url = "path:/home/me/projects/development/nixops";
     nixops-src.flake = false;
     # nixops-plugged.url = "github:lukebfox/nixops-plugged";
     # nixops-plugged.inputs.nixpkgs.follows = "nixops/nixpkgs";
     # nixops-plugged.inputs.flake-utils.follows = "nixops/utils";
     # nixops-aws.url = "github:rehno-lindeque/nixops-aws?ref=spot-fleet";
-    nixops-aws-src.url = "path:/home/me/projects/development/nixops-aws";
+    nixops-aws-src.url = "github:rehno-lindeque/nixops-aws?ref=wip";
+    # nixops-aws-src.url = "path:/home/me/projects/development/nixops-aws";
     nixops-aws-src.flake = false;
     # nixos-modules-contrib-src.url = "github:nix-community/nixos-modules-contrib/81a1c2ef424dcf596a97b2e46a58ca73a1dd1ff8";
     # nixos-modules-contrib-src.flake = false;
