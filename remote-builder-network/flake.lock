@@ -3,7 +3,7 @@
     "nixops-aws-src": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-6ATKw1wsYWQzAVG0DNz7CjawnsmBwR3NcCNNkRe73A4=",
+        "narHash": "sha256-pIaoVLj2/2oYha7ow4bPpr4oPP28GoULqxPFOm27Pr0=",
         "path": "/home/me/projects/development/nixops-aws",
         "type": "path"
       },
