@@ -2,6 +2,7 @@
 , linkFarm
 , writeShellScriptBin
 , name
+, awscli
 }:
 
 let
@@ -18,7 +19,13 @@ let
                 echo 'GENERAL USAGE:'
                 echo
                 printf '${"\t"}${white}${name}-help${nc}''\tdisplay this help message''\n'
+                printf '${"\t"}${white}${name}-aws-offerings${nc}''\tfetch up-to-date AWS EC2 offerings (used to update template)''\n'
                 echo
+              '';
+              "${name}-aws-offerings" = ''
+                ${awscli}/bin/aws ec2 describe-instance-type-offerings \
+                  --region us-east-1 \
+                  --location-type availability-zone
               '';
             }
           )

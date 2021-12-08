@@ -14,6 +14,9 @@ pkgs.mkShell {
     direnv
     remote-builder-template
 
+    # dependencies for updating aws
+    awscli
+
     # dependencies for updating nixops
     poetry
     poetry2nix.cli
