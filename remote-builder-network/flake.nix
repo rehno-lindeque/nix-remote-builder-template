@@ -20,9 +20,10 @@
     # utils.follows = "nixops/utils";
     nixpkgs.url = "github:nixos/nixpkgs";
     utils.url = "github:numtide/flake-utils";
+    nix.url = "github:rehno-lindeque/nix?ref=s3-archived-objects";
   };
 
-  outputs = { self, nixpkgs, nixops-src, nixops-aws-src, utils, ... }:
+  outputs = { self, nix, nixpkgs, nixops-src, nixops-aws-src, utils, ... }:
     let
       inherit (nixpkgs) lib;
 
@@ -43,7 +44,7 @@
 
       devShell = import ./shell.nix {
         inherit networkName;
-        pkgs = pkgs // self.packages."${system}";
+        pkgs = pkgs;
       };
 
       packages = { inherit (pkgs) networkOps; };
@@ -74,7 +75,9 @@
           ({ inherit (networkConfig) network resources nixpkgs; } // networkConfig.deployments);
 
       overlay = final: prev: {
-        nix = final.nixFlakes;
+        # nix = final.nixFlakes;
+        # nixFlakes = nix;
+        # nix = nix;
         # nixops = nixops-plugged.packages."${final.system}".nixops-plugged;
         # nixops-aws = prev.callPackage nixops-aws {};
         # nixops = (lib.traceVal nixops.defaultPackage."x86_64-linux").withPlugins {};

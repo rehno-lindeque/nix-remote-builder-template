@@ -2,6 +2,11 @@
   description = "Remote builder and supporting infrastructure on AWS EC2";
 
   inputs = {
+    # Included for easy diff
+    template.url = "github:rehno-lindeque/nix-remote-builder-template?dir=simple-remote-builder-network";
+    template.flake = false;
+
+    # Remote builder
     remote-builder-network.url = "path:../remote-builder-network";
     # remote-builder-network.url = "github:rehno-lindeque/nix-remote-builder-template?dir=remote-builder-network";
 

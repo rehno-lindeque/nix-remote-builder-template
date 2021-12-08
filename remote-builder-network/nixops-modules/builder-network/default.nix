@@ -19,25 +19,20 @@ let
         default = "us-east-1";
       };
 
-      zone = lib.mkOption {
-        type = lib.types.str;
-        default = "us-east-1b";
-      };
-
       ami = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
         example = "ami-00000000";
         default = null;
       };
 
-      instanceType = lib.mkOption {
-        type = lib.types.str;
-        default = "t2.micro";
+      instanceTypes = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ "m1.small" ];
       };
 
-      spotInstancePrice = lib.mkOption {
-        type = lib.types.int;
-        default = 1;
+      spotMaxTotalPrice = lib.mkOption {
+        type = lib.types.str;
+        default = "1.0";
       };
     };
 

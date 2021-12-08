@@ -20,7 +20,7 @@ lib.mkIf s3Bucket.provision
     # You may want to also set PublicAccessBlock, not currently supported by nixops
     website.enabled = false;
 
-    # Save on costs by automatically moving objects to long-term, infrequent access storage after 30 days
+    # Save on costs by automatically moving objects to long-term, infrequent access storage after 365 days
     lifeCycle = ''
       {
         "Rules": [
@@ -29,7 +29,7 @@ lib.mkIf s3Bucket.provision
              "Prefix": "",
              "Transitions": [
                {
-                 "Days": 30,
+                 "Days": 365,
                  "StorageClass": "GLACIER"
                }
              ],

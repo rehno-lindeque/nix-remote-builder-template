@@ -27,7 +27,21 @@ in
   };
   resources.awsSpotFleets."${builderNetwork.name}-fleet" = { resources, lib, ... }:
     let
-      allSubnets = lib.attrValues resources.vpcSubnets;
+      availableSubnets = lib.attrValues resources.vpcSubnets;
+      availableInstanceOfferings = (lib.importJSON ./instance-type-offerings.json).InstanceTypeOfferings;
+      collectInstanceTypes =
+        lib.groupBy'
+          (result: offering: result ++ [ offering.InstanceType ])
+          [ ]
+          (offering: offering.Location);
+      availableInstanceTypesPerZone =
+        lib.mapAttrs
+          (zone: lib.intersectLists builderNetwork.aws.instanceTypes)
+          (collectInstanceTypes availableInstanceOfferings);
+      overridesBySubnet = subnet:
+        builtins.map
+          (instanceType: { inherit instanceType; weightedCapacity = 1.; subnetId = subnet; })
+          availableInstanceTypesPerZone.${subnet.zone};
     in
     {
       inherit (builderNetwork.aws) region;
@@ -45,32 +59,24 @@ in
             # launchTemplateName = "${builderNetwork.name}-template";
             version = "$Latest";
           };
-          overrides = lib.concatMap
-            (subnet: [
-              {
-                instanceType = "m1.small";
-                weightedCapacity = 1.;
-                  # spotPrice = "0.05";
-                  subnetId = subnet;
-              }
-              {
-                instanceType = "m3.medium";
-                weightedCapacity = 1.;
-                  # spotPrice = "0.05";
-                  subnetId = subnet;
-              }
-              {
-                instanceType = "m1.medium";
-                weightedCapacity = 1.;
-                  # spotPrice = "0.05";
-                  subnetId = subnet;
-              }
-            ])
-            allSubnets;
+          overrides = lib.concatMap overridesBySubnet availableSubnets;
+          # overrides =
+          #   lib.concatMap
+          #     (subnet:
+          #     subnet
+          #       builtins.map
+          #         (instanceType: {
+          #           inherit instanceType;
+          #           weightedCapacity = 1.;
+          #           subnetId = subnet;
+          #         })
+          #         builderNetwork.aws.instanceTypes
+          #     )
+          #     allSubnets;
         }
       ];
       # spotPrice = "0.08";
-      spotMaxTotalPrice = "1.0";
+      inherit (builderNetwork.aws) spotMaxTotalPrice;
       # "ValidFrom": "2021-10-05T14:20:35Z",
       # "ValidUntil": "2022-10-05T14:20:35Z",
       # terminateInstancesWithExpiration = false;

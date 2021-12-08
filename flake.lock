@@ -1,39 +1,36 @@
 {
   "nodes": {
-    "nixops": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_2",
-        "utils": "utils"
-      },
+    "nixops-aws-src": {
+      "flake": false,
       "locked": {
-        "lastModified": 1625656666,
-        "narHash": "sha256-hOFE2vTEXL1SZhNxdvWxRMP4mIyjFq4ZZZJ15xhp8EA=",
-        "owner": "nixos",
-        "repo": "nixops",
-        "rev": "2e67d89d126af9d2bf702da13efe73fbd471a5ec",
+        "lastModified": 1636756141,
+        "narHash": "sha256-PK1eCnHpBhMYXMeinN2YsFyMAdfyh+TurwR+74tDThg=",
+        "owner": "rehno-lindeque",
+        "repo": "nixops-aws",
+        "rev": "cb94cc1402d6da04534a05f4b94c6b3da1c84c23",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "repo": "nixops",
-        "rev": "2e67d89d126af9d2bf702da13efe73fbd471a5ec",
+        "owner": "rehno-lindeque",
+        "ref": "wip",
+        "repo": "nixops-aws",
         "type": "github"
       }
     },
-    "nixops-aws": {
+    "nixops-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1633007334,
-        "narHash": "sha256-aNK6fIwd4CKXLBjuHRyAsKq5Yb4h1An4TeCL+0ugGlg=",
+        "lastModified": 1636756247,
+        "narHash": "sha256-zy3cRfBvQmkbUXywERINjF6AvD2jRfFF13mYJDYSpjc=",
         "owner": "rehno-lindeque",
-        "repo": "nixops-aws",
-        "rev": "ebf09fa164bc0fbaceeb98769618391be80b60ee",
+        "repo": "nixops",
+        "rev": "7bf9bcc455a6558e7dcac84114169963c5b408b7",
         "type": "github"
       },
       "original": {
         "owner": "rehno-lindeque",
-        "ref": "spot-fleet",
-        "repo": "nixops-aws",
+        "ref": "wip",
+        "repo": "nixops",
         "type": "github"
       }
     },
@@ -55,41 +52,28 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1612282043,
-        "narHash": "sha256-MzoN8nI1eydYHuWBAXBcw9Na0XndZHa/VjoxZRWSX68=",
-        "owner": "NixOS",
+        "lastModified": 1636756140,
+        "narHash": "sha256-5JrYsix+Vh70PXH1TKjpxSPMuzUZo/YiG2vHaRjCy0M=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "fab6fcdceb2560a4ab943830a2b1632458c7a6ff",
+        "rev": "fbe24d85f2a2388a629041639952ced83efe0554",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "owner": "nixos",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "remote-builder-network": {
       "inputs": {
-        "nixops": "nixops",
-        "nixops-aws": "nixops-aws",
-        "nixops-plugged": [
-          "remote-builder-network",
-          "nixops-plugged"
-        ],
-        "nixpkgs": [
-          "remote-builder-network",
-          "nixops",
-          "nixpkgs"
-        ],
-        "utils": [
-          "remote-builder-network",
-          "nixops",
-          "utils"
-        ]
+        "nixops-aws-src": "nixops-aws-src",
+        "nixops-src": "nixops-src",
+        "nixpkgs": "nixpkgs_2",
+        "utils": "utils"
       },
       "locked": {
-        "narHash": "sha256-AtHiYeJ1Jx2jZE5bqtjj0m9NEFtahPSNMJCLSxzI1qI=",
+        "narHash": "sha256-OwpgRXw5QRRms+DFNDGW373iIVP5oNfBYFWJ6mVSO2o=",
         "path": "./remote-builder-network",
         "type": "path"
       },
@@ -104,18 +88,17 @@
         "remote-builder-network": "remote-builder-network",
         "utils": [
           "remote-builder-network",
-          "nixops",
           "utils"
         ]
       }
     },
     "utils": {
       "locked": {
-        "lastModified": 1610051610,
-        "narHash": "sha256-U9rPz/usA1/Aohhk7Cmc2gBrEEKRzcW4nwPWMPwja4Y=",
+        "lastModified": 1634851050,
+        "narHash": "sha256-N83GlSGPJJdcqhUxSCS/WwW5pksYf3VP1M13cDRTSVA=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "3982c9903e93927c2164caa727cd3f6a0e6d14cc",
+        "rev": "c91f3de5adaf1de973b797ef7485e441a65b8935",
         "type": "github"
       },
       "original": {

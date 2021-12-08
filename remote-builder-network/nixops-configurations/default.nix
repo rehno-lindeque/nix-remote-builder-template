@@ -12,15 +12,10 @@
     # name = "builder";
     aws = {
       region = "us-east-1";
-      zone = "us-east-1b";
+      instanceTypes = [ "m1.small" "m3.medium" "m1.medium" ];
+      spotMaxTotalPrice = "1.0";
 
-      # For current spot instance pricing, see
-      # https://aws.amazon.com/ec2/spot/pricing
-      # https://aws.amazon.com/ec2/spot/instance-advisor/
-      instanceType = "t2.micro";
-      spotInstancePrice = 1;
-
-      # TODO: temporary
+      # TODO: temporary ami
       ami = "ami-027ea73608a78aea0";
     };
     binaryCache.url = "s3://nix-build?region=us-east-1";

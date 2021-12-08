@@ -1,6 +1,7 @@
 { pkgs
 , config
 , lib
+, flake
 , ...
 }:
 
@@ -24,10 +25,10 @@ let
     export IFS=' '
 
     echo "Signing" $OUT_PATHS
-    echo ${pkgs.nixFlakes}/bin/nix store sign-paths \
+    echo ${pkgs.nixFlakes}/bin/nix store sign \
       --key-file ${binaryCachePrivateKey} \
       $OUT_PATHS
-    ${pkgs.nixFlakes}/bin/nix store sign-paths \
+    ${pkgs.nixFlakes}/bin/nix store sign \
       --key-file ${binaryCachePrivateKey} \
       $OUT_PATHS
 
@@ -76,6 +77,7 @@ in
 
     # Note that the nix package affects nix.sshServe
     nix.package = pkgs.nixFlakes;
+    # nix.package = flake.inputs.nix;
 
     nix.extraOptions = ''
       post-build-hook = ${uploadToS3Cache}
