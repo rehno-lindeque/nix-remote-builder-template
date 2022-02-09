@@ -18,9 +18,8 @@
     # nixos-modules-contrib-src.flake = false;
     # nixpkgs.follows = "nixops/nixpkgs";
     # utils.follows = "nixops/utils";
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-21.11";
     utils.url = "github:numtide/flake-utils";
-    nix.url = "github:rehno-lindeque/nix?ref=s3-archived-objects";
   };
 
   outputs = { self, nix, nixpkgs, nixops-src, nixops-aws-src, utils, ... }:
@@ -75,7 +74,7 @@
           ({ inherit (networkConfig) network resources nixpkgs; } // networkConfig.deployments);
 
       overlay = final: prev: {
-        # nix = final.nixFlakes;
+        nix = final.nixFlakes;
         # nixFlakes = nix;
         # nix = nix;
         # nixops = nixops-plugged.packages."${final.system}".nixops-plugged;

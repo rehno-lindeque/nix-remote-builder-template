@@ -4,7 +4,7 @@
     remote-builder-network.url = "path:./remote-builder-network";
     # nixpkgs.follows = "remote-builder-network/nixops/nixpkgs";
     nixpkgs.url = "github:nixos/nixpkgs/44999232a974132e4c4623ae67f856154b330dff";
-    utils.follows = "remote-builder-network/nixops/utils";
+    utils.follows = "remote-builder-network/utils";
 
     # Avoid "follows a non-existent input" bug in nix 2.0
     # See https://github.com/NixOS/nix/issues/3602
