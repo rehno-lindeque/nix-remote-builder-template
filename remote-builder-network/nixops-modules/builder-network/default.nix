@@ -34,6 +34,12 @@ let
         type = lib.types.str;
         default = "1.0";
       };
+
+      extraIamStatements = lib.mkOption {
+        type = with lib.types; listOf (attrsOf anything);
+        default = [];
+        description = "Additional IAM statements to include in the instance profile (IAM role) of builders";
+      };
     };
 
     binaryCache = {

@@ -16,10 +16,7 @@ in
     associatePublicIpAddress = true;
     # subnetId = resources.vpcSubnets."${builderNetwork.name}-subnet";
     keyPair = resources.ec2KeyPairs."${builderNetwork.name}-keypair".name;
-
-    # TODO: fix setting security group without subnet
-    # securityGroupIds = [ resources.ec2SecurityGroups."${builderNetwork.name}-sg".name ];
-
+    securityGroupIds = [ resources.ec2SecurityGroups."${builderNetwork.name}-sg".name ];
     ebsInitialRootDiskSize = 30;
     instanceProfile = resources.iamRoles."${builderNetwork.name}-role".name;
     instanceType = ""; # TODO: currently necessary to prevent nix from defaulting to m1.small

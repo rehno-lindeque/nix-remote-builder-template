@@ -39,7 +39,7 @@ in
             "arn:aws:s3:::${s3Bucket.name}/*"
           ];
         }
-      ];
+      ] ++ builderNetwork.aws.extraIamStatements;
     };
   };
 
