@@ -37,7 +37,7 @@ in
           (collectInstanceTypes availableInstanceOfferings);
       overridesBySubnet = subnet:
         builtins.map
-          (instanceType: { inherit instanceType; weightedCapacity = 1.; subnetId = subnet; })
+          (instanceType: { inherit instanceType; subnetId = subnet; })
           availableInstanceTypesPerZone.${subnet.zone};
     in
     {
